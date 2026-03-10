@@ -1,80 +1,56 @@
 # Task Management Portal
 
-A simple Task Management Portal built using the MERN stack (MongoDB, Express/Next.js routes, React Vite, Node.js).
+A professional Task Management Portal built with the MERN stack, featuring a secure Express.js backend and a dynamic React frontend powered by Vite.
 
-## Project Structure
-The repository is split into two completely separate folders natively:
-1. `backend/`: A Next.js API-only server connected to MongoDB.
-2. `frontend/`: A React Single Page Application created with Vite and styled with Tailwind CSS.
+## Features
+- **User Authentication**: Secure registration and login using JWT (JSON Web Tokens).
+- **Task Management**: Create, view, update (status), and delete tasks.
+- **Filtering**: Easily filter tasks by status (All, Pending, Completed).
+- **Responsive Design**: Modern UI styled with Tailwind CSS, fully responsive across all devices.
 
-## How to Run Locally
+## Tech Stack
+- **Frontend**: React, Vite, Tailwind CSS, Axios, Lucide React.
+- **Backend**: Node.js, Express.js, Mongoose.
+- **Database**: MongoDB.
+
+## Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
-- Local MongoDB instance or MongoDB Atlas account
+- Node.js (v18 or higher)
+- MongoDB (Local instance or Atlas connection string)
 
-### 1. Setup Database
-Create a `.env.local` inside the `backend` directory:
+### 1. Database Configuration
+Create a `.env` file in the `backend/` directory:
 ```env
 MONGODB_URI=mongodb://127.0.0.1:27017/task-portal
-JWT_SECRET=your_super_secret_jwt_key
+JWT_SECRET=your_jwt_secret_key
+PORT=5000
 ```
 
-### 2. Run Backend
+### 2. Backend Installation & Setup
 ```bash
 cd backend
 npm install
-npm run dev
-# The backend API proxy routes will start at http://localhost:3000
+npm start
 ```
+The server will start on [http://localhost:5000](http://localhost:5000).
 
-### 3. Run Frontend
+### 3. Frontend Installation & Setup
 ```bash
 cd frontend
 npm install
 npm run dev
-# The Vite frontend server will typically start at http://localhost:5173
 ```
-Visit the frontend URL in your browser to interact with the application.
+The application will be accessible at [http://localhost:5174](http://localhost:5174) (or as shown in the terminal).
+
+## API Documentation
+The backend provides a stateless REST API:
+- `POST /api/auth/register`: Register a new user.
+- `POST /api/auth/login`: Authenticate and receive a JWT.
+- `GET /api/tasks`: Fetch all tasks for the logged-in user.
+- `POST /api/tasks`: Create a new task.
+- `PUT /api/tasks/:id`: Update task status.
+- `DELETE /api/tasks/:id`: Remove a task.
 
 ---
-
-## Technical Constraints & Deliverables Checked
-- **Frontend**: React (Vite)
-- **Backend**: Next.js
-- **Database**: MongoDB
-- **User Authentication**: Registered / Logged In users via JWT.
-- **Core Features**: 
-    - Add Task (Title required, Description optional)
-    - View Tasks (Displayed in list, shows status & created date)
-    - Mark Task as Completed (Status toggling)
-    - Filtering (All / Pending / Completed criteria)
-
----
-
-## Documentation
-
-### AI Prompts Used
-The following prompts were provided by the user to the Antigravity Agent:
-1. *"is assignment ko complete kar ke do jo bhi requirement is assinment me boli gayi hai , sari complete kar ke do , run bhi kar ke do, please fast"*
-2. *"frontend and backend dono part run kar ke do"*
-3. *"frontend and backend dono running mode me with frontend backend connectivity"*
-4. *"frontend and backend ke seperate folder hone chahiye"*
-
-### What AI generated vs what they modified
-- **AI Generated**: 100% of the codebase, project initialization using `create-next-app` & `create-vite`, dependency injection (Tailwind, Mongoose, Axios), implementation of user authentication, DB connections, API routes, and React components.
-- **Human Modified**: No structural code was manually modified by the human user. The user steered the agent by asserting requirements regarding project architecture (strict separation between backend/frontend, concurrent local execution) and ensuring 100% alignment with the assignment criteria.
-
-### API Design
-The backend is powered by Next.js app directory API routes, functioning purely as a stateless REST JSON boundary.
-- **`POST /api/auth/register`**: Expects `email`, `password`. Creates user and returns JWT token & user object.
-- **`POST /api/auth/login`**: Expects `email`, `password`. Authenticates user and returns JWT token & user object.
-- **`GET /api/tasks`**: Requires `Authorization: Bearer <token>`. Returns JSON array of task objects owned by the authenticated user, sorted by descending creation time.
-- **`POST /api/tasks`**: Requires `Authorization: Bearer <token>`. Expects `title`, optional `description`. Returns the newly created Task object with `status: Pending`.
-- **`PUT /api/tasks/:id`**: Requires `Authorization: Bearer <token>`. Expects updated `status`. Marks tasks as either 'Completed' or 'Pending'.
-- **`DELETE /api/tasks/:id`**: Requires `Authorization: Bearer <token>`. Deletes the task from MongoDB.
-
-### State Management
-State management on the frontend strictly relies on React's native hooks (`useState`, `useEffect`) without heavy libraries (Redux) to adhere to the "simple portal" specification.
-- **Application Scope**: Global state is minimized exclusively to the Authentication `token`, which is lifted to the root `App.jsx` component. It passes `setToken` closures to nested routes so children can revoke login status. `axios` intercepts this state change using a `useEffect` hook to dynamically populate the default `Authorization` HTTP header globally for all subsequent async API requests.
-- **Local Dashboard Scope**: Inside `TaskBoard.jsx`, list-state mutations are optimistic when practical. Complex arrays like `tasks`, active enum `filter` strings, input `title`, and input `description` are restricted to local variables. Toggling status uses a declarative filter mapping, replacing old array items via immutable state updates rather than direct DOM mutations.
+Developed as a production-ready Task Management solution.
